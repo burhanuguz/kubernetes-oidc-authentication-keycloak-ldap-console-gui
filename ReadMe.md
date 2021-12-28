@@ -116,6 +116,8 @@ kubectl get po -n kube-system
 #Error from server (Forbidden): pods is forbidden: User "oidc:test-user" cannot list resource "pods" in API group "" in the namespace "kube-system"
 ```
 
+![7](https://user-images.githubusercontent.com/59168275/147554833-68e74e89-51df-434a-8297-1859e1658d6d.gif)
+
 - This is the end of the OIDC integration of Kubernetes. Next is integrating Keycloak with LDAP to authenticate Kubernetes Cluster.
 
 
