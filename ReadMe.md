@@ -61,7 +61,7 @@ You will be able to test this integration with [Katacoda's Kubernetes Playground
 ![6](https://user-images.githubusercontent.com/59168275/147549023-ff82b22d-d623-4efb-b98b-a43b1df6784c.gif)
 
 - After that you need an id_token and refresh_token, you can get it like the example below. 
-		- Not that I have used **jq** here.
+	- Not that I have used **jq** here.
 
 ```bash
 ## Enter OIDC properties here
