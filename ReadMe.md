@@ -153,7 +153,7 @@ We have configured our kube-apiserver and Keycloak. Now we can integrate an exam
 - We will use Free LDAP test server provided by Zflex. Link is here: [ZFLEXLDAP](https://www.zflexldapadministrator.com/index.php/blog/82-free-online-ldap)
 - With the credentials and informations given Zflex site, enter the LDAP attributes like in below(Your own LDAP server may differ the attributes entered here)
 	- Note that, I had another page that was already entered the information below on the GIF.
-	- Also I have placed extra filter as **(?(employeetype=temp))** to decrease the number of users, because this free site allows us to have 25 member at max.
+	- Also I have placed extra filter as **(?(employeetype=temp))** to decrease the number of users, because this free site allows us to have 10 member at max.
 ```yaml
 ## LDAP Attributes
 Edit-Mode: READ-ONLY # Since BindDN itself is a read-only user
