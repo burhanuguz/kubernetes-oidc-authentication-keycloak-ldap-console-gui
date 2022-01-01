@@ -1,0 +1,111 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: origin-console-app
+  name: origin-console-deployment
+  namespace: origin-console
+spec:
+  selector:
+    matchLabels:
+      app: origin-console-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: origin-console-app
+    spec:
+      containers:
+      - image: quay.io/openshift/origin-console:latest
+        name: origin-console-container
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            cpu: 20m
+            memory: 200Mi
+        command:
+          - /opt/bridge/bin/bridge
+          - '-base-address=https://<KATACODA-PORT-30000-OR-INGRESS-URL>/'
+          - '-k8s-mode=in-cluster'
+          - '-k8s-auth=oidc'
+          - '-listen=http://0.0.0.0:8080'
+          - '-public-dir=/opt/bridge/static'
+          - '-user-auth=oidc'
+          - '-user-auth-oidc-client-id=account'
+          - '-user-auth-oidc-issuer-url=https://app.please-open.it/auth/realms/<YOUR-REALM>'
+          - '-user-auth-oidc-client-secret=<CLIENT SECRET>'
+          ## If you wish to use it on your own environment, you will use these parameters
+          # - '-listen=https://0.0.0.0:8443' # To listen port with TLS
+          # - '-tls-cert-file=/tmp/https/tls.crt' # Certificate for TLS connection
+          # - '-tls-key-file=/tmp/https/tls.key' # Certificate key for TLS connection
+          # - '-ca-file=/tmp/https/ca.crt' # Default Certificate chain for the console program
+          # - '-user-auth-oidc-ca-file=/tmp/https/oidc-ca.crt' # Certificate that has OIDC Providers CA
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          ## Use https in production
+          # - name: https
+          #   containerPort: 8443
+          #   protocol: TCP
+## Bind the secret that inherits the certificate, key and ca certificate.
+#        volumeMounts:
+#        - name: tls
+#          mountPath: "/tmp/https"
+#          readOnly: true
+#      volumes:
+#      - name: tls
+#        secret:
+#          secretName: origin-console-tls-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: origin-console-service
+  namespace: origin-console
+spec:
+  ## For this example we use it to expose it as NodePort.
+  # type: ClusterIP
+  type: NodePort
+  selector:
+    app: origin-console-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
+  ## You might as well change if it uses TLS
+  # ports:
+  #   - protocol: TCP
+  #     port: 443
+  #     targetPort: 8443
+
+## You may use Ingress or other method to expose console's service
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     nginx.org/ssl-services: origin-console
+#   name: origin-console-ingress
+#   namespace: origin-console
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: origin-console.mydomain.com
+#     http:
+#       paths:
+#       - backend:
+#           service:
+#             name: origin-console-service
+#             port:
+#               number: 443
+#         path: /
+#         pathType: Prefix
+#   tls:
+#   - hosts:
+#     - origin-console.mydomain.com
+#     secretName: testsecret-tls
