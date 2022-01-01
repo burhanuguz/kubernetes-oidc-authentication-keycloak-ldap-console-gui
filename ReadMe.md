@@ -78,10 +78,10 @@ OIDC_USER_REFRESH_TOKEN=$(echo "${OIDC_TOKENS}" | jq -r .refresh_token)
 spec:
   containers:
   - command:
-	- kube-apiserver
-	- ...
-	- --client-ca-file=/etc/kubernetes/pki/ca.crt
-	## Start editing after this line
+    - kube-apiserver
+    - ...
+    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+    ## Start editing after this line
     - --oidc-issuer-url=https://app.please-open.it/auth/realms/<YOUR-REALM>
     - --oidc-client-id=account
     - --oidc-username-claim=preferred_username # It maps the Keycloak's prefferred_username claim as user object in Kubernetes Cluster
