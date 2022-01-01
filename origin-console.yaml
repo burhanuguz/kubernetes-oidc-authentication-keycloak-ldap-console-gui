@@ -108,4 +108,4 @@ spec:
 #   tls:
 #   - hosts:
 #     - origin-console.mydomain.com
-#     secretName: testsecret-tls
+#     secretName: origin-console-tls-secret
