@@ -16,7 +16,10 @@ You will be able to test this integration with [Katacoda's Kubernetes Playground
 - First thing to do is creating an account on https://realms.please-open.it to create our own Keycloak Realm. (It is very straightforward, I used my Github account to create one easily)
 - After you login, you will create new Realm. I named the realm as k8s-auth as an example.
 
-![2](https://user-images.githubusercontent.com/59168275/147535904-e7fef9ef-022c-4c9c-bdc9-2090805e4800.gif)
+<p align="center">
+  <img width="769" height="461" src="https://user-images.githubusercontent.com/59168275/147535904-e7fef9ef-022c-4c9c-bdc9-2090805e4800.gif">
+</p>
+
 - You will notice that the realm name is highlighted, click it and you will be redirected to the Keycloak Realm. What we need is Issuer URL and client name. When a realm is created, default clients is created too. We will use default client named as *account* for this example. We have few steps to do it this step;
 	1. Create new scopes as **openid**(is needed for OIDC Authentication to get **id_token**) and **groups**(will be used to get groups and also its prerequisite for **Openshift Origin Console**). And after that map those scopes as default scope settings for newly created clients. We will spefically add the scopes for the *account* client because its already created.
 	2. Turn on **Direct Access Grants Enabled** settings to get id token with curl command.
@@ -25,17 +28,22 @@ You will be able to test this integration with [Katacoda's Kubernetes Playground
 	5. Create a new mapper to get **group** information with claim named **"groups"** in the *id_token*  (You will see an example how variables got below)
 		-	Note that, switch off *Full Group Path* on *Groups* Mapper to get only group named as desired.
 
-![3](https://user-images.githubusercontent.com/59168275/147847881-f8d7db97-f85b-4218-8a9c-bc3e09822723.gif)
-
+<p align="center">
+  <img width="" height="" src="https://user-images.githubusercontent.com/59168275/147847881-f8d7db97-f85b-4218-8a9c-bc3e09822723.gif">
+</p>
 
 - We will also create a **test-group** and a **test-user**. Add **test-user** to **test-group** and give a permanent password to see if the authentication works on cluster. I gave **1** as the password :)
 	- Note that I switched off **Temporary** setting when creating password for the user to make password permanent.
 
-![4](https://user-images.githubusercontent.com/59168275/147847878-0893fdae-175c-458b-83ec-20f0bbe4e969.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147847878-0893fdae-175c-458b-83ec-20f0bbe4e969.gif">
+</p>
 
 - Now we need to get **issuer-url** and **token-endpoint-url** of our Realm's from **OpenID endpoint** like in below.
 
-![5](https://user-images.githubusercontent.com/59168275/147847900-0460d55c-781b-4f8c-9a7d-2efdcc07a73a.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147847900-0460d55c-781b-4f8c-9a7d-2efdcc07a73a.gif">
+</p>
 
 - After that you can get **id_token** and **refresh_token**. We will take a look what is inside in our **id_token** from
 	- Note that I have used **jq** here.
@@ -69,7 +77,9 @@ OIDC_USER_REFRESH_TOKEN=$(echo "${OIDC_TOKENS}" | jq -r .refresh_token)
 
 - Check the *id_token* on [JWT.IO](https://jwt.io/) like in this example. You will notice that the **groups** and **preferred_username** properties has the values we wanted. We will login to cluster and give **RBAC** with respect to this **username** and **group** properties. **Groups** property will only come after you add it to **mapper** on client
 
-![6](https://user-images.githubusercontent.com/59168275/147847902-602f7704-c10f-4e71-bd9a-95fbcdbd7a94.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147847902-602f7704-c10f-4e71-bd9a-95fbcdbd7a94.gif">
+</p>
 
 
 - Next step will be configuring the kube-apiserver. If you have installed kubernetes cluster with **kubeadm** way, you will edit **/etc/kubernetes/manifests/kube-apiserver.yml** file. Use the **preferred_username** property for **username-claim** and **groups** property for **groups-claim**. We will edit the file in Katacoda's playground and wait for a minute to let kube-apiserver restart. 
@@ -102,7 +112,9 @@ spec:
 # and key pair. Or you can use this similar script that generates SHA256
 # certs with a longer life and larger key size.
 ```
-![7](https://user-images.githubusercontent.com/59168275/147848176-029384c8-d802-4e04-bb07-1e95e971afdd.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147848176-029384c8-d802-4e04-bb07-1e95e971afdd.gif">
+</p>
 
 - We have tokens, now we can use them to login to cluster.
 ```bash
@@ -142,7 +154,9 @@ kubectl get po --namespace kube-system
 ## As you see, ${OIDC_USER} could not get resources on kube-system but only on test-group-authentication and test-user-authentication namespaces.
 ```
 
-![8](https://user-images.githubusercontent.com/59168275/147848335-a6e9d98a-99fe-4669-8759-5fdaffd5698c.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147848335-a6e9d98a-99fe-4669-8759-5fdaffd5698c.gif">
+</p>
 
 
 - This is the end of the OIDC integration of Kubernetes. Next is integrating Keycloak with LDAP to authenticate Kubernetes Cluster.
@@ -170,7 +184,9 @@ Bind-Type: simple
 Bind-DN: cn=ro_admin,ou=sysadmins,dc=ZFLEXSOFTWARE,dc=COM # Took it from Zflex page
 Bind-Credential: zflexpass # Same goes with Bind DN
 ```
-![9](https://user-images.githubusercontent.com/59168275/147848784-d8cbb91d-d73f-469b-ad4d-fe13e8bee7b9.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147848784-d8cbb91d-d73f-469b-ad4d-fe13e8bee7b9.gif">
+</p>
 
 - We will also add **LDAP group mapper** to authorize with LDAP group.
 ```yaml
@@ -188,7 +204,9 @@ Mode: READ_ONLY # Since BindDN itself is a read-only user
 User-Groups-Retrieve-Strategy: LOAD_GROUPS_BY_MEMBER_ATTRIBUTE # Load groups from groups member attribute, you can get group from user's membership attribute also. There is an option to do that.
 Member-Of-LDAP-Attribute: memberOf # This option defines users membership attribute.
 ```
-![10](https://user-images.githubusercontent.com/59168275/147848959-9694f374-65d7-42fe-8cf7-25e3f0a31b94.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147848959-9694f374-65d7-42fe-8cf7-25e3f0a31b94.gif">
+</p>
 
 - We can test it like above example. Define the guest1 user and add its password, after that add it as a user in cluster. The procedure is the same as above.
 ```bash
@@ -253,7 +271,9 @@ kubectl get po --namespace kube-system
 
 ## As you see, ${OIDC_USER} could not get resources on kube-system but only on testGROUP-authentication and guest1-authentication namespace namespaces.
 ```
-![11](https://user-images.githubusercontent.com/59168275/147849300-ae7bd029-a4f9-4696-acc1-5b926e8edc2e.gif)
+<p align="center">
+  <img width="1761" height="1238" src="https://user-images.githubusercontent.com/59168275/147849300-ae7bd029-a4f9-4696-acc1-5b926e8edc2e.gif">
+</p>
 
 - Final step is to have Authentication with GUI. We will use Openshift Origin Console for this.
 
@@ -331,7 +351,9 @@ spec:
 kubectl create ns origin-console
 kubectl create -f origin-console.yaml
 ```
-![12](https://user-images.githubusercontent.com/59168275/147852146-91231bb4-d5c4-42e9-ad18-0d9c51437410.gif)
+<p align="center">
+  <img width="1934" height="1541" src="https://user-images.githubusercontent.com/59168275/147852146-91231bb4-d5c4-42e9-ad18-0d9c51437410.gif">
+</p>
 
 References:
 1. https://kubernetes.io/docs/reference/access-authn-authz/authentication/#configuring-the-api-server (Kubernetes-OIDC Integration)
