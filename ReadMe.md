@@ -128,8 +128,8 @@ kubectl create namespace test-group-authentication
 kubectl create namespace test-user-authentication
 
 ## Let's give a rolebinding specifically to user and group each to view resources in created namespaces respectively
-kubectl create rolebinding "${OIDC_USER}-view"  --clusterrole=view --user="oidc-user:${OIDC_USER}"    --namespace test-group-authentication
-kubectl create rolebinding "${OIDC_GROUP}-view" --clusterrole=view --group="oidc-group:${OIDC_GROUP}" --namespace test-user-authentication
+kubectl create rolebinding "${OIDC_USER}-view"  --clusterrole=view --user="oidc-user:${OIDC_USER}"    --namespace test-user-authentication
+kubectl create rolebinding "${OIDC_GROUP}-view" --clusterrole=view --group="oidc-group:${OIDC_GROUP}" --namespace test-group-authentication
 
 ## After that switch to the ${OIDC_USER}-context
 kubectl config use-context "${OIDC_USER}-context"
@@ -240,8 +240,8 @@ kubectl create namespace test-group-authentication
 kubectl create namespace test-user-authentication
 
 ## Let's give a rolebinding specifically to user and group each to view resources in created namespaces respectively
-kubectl create rolebinding "${OIDC_USER}-view"  --clusterrole=view --user="oidc-user:${OIDC_USER}"    --namespace test-group-authentication
-kubectl create rolebinding "${OIDC_GROUP}-view" --clusterrole=view --group="oidc-group:${OIDC_GROUP}" --namespace test-user-authentication
+kubectl create rolebinding "${OIDC_USER}-view"  --clusterrole=view --user="oidc-user:${OIDC_USER}"    --namespace test-user-authentication
+kubectl create rolebinding "${OIDC_GROUP}-view" --clusterrole=view --group="oidc-group:${OIDC_GROUP}" --namespace test-group-authentication
 
 ## After that switch to the ${OIDC_USER}-context
 kubectl config use-context "${OIDC_USER}-context"
